@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html >
+<head>
+    <meta charset="UTF-8">
+    <title>HomeWork</title>
+    <style>
+    	.page-all {
+    		height: 2000px;
+    		z-index: 1;
+    	}
+    	#demo {
+    		position: absolute;
+    		right: 5px;
+    		z-index: 99;
+    	}
+    	.elem {
+    		margin: 5px;
+    		padding: 5px;
+    		height: auto;
+    		width: 50px;
+    		color: black;
+    		border: 1px solid grey;
+    		text-align: center;
+    		position: absolute;
+    		top: 250px;
+    		left: 0px;
+    		z-index: 98;
+    	}
+    	#drag {
+    		top: 150px;
+    		background-color: grey;
+    		height: 50px;
+    		z-index: 100;
+    	}
+    </style>
+</head>
+<body>
+	<div class='page-all'>
+		<input type="button" id="demo" value="back to top">
+		<div id='elem1' class='elem'>
+			только
+			вперед)
+		</div>
+
+		<div id='drag' class='elem'></div>
+	</div>
+	<script type="text/javascript">
+		//back to top 
+		const drag = document.getElementById('drag');
+		const buttonOnTop = document.getElementById('demo');
+		const elem = document.getElementById('elem1');
+
+		buttonOnTop.addEventListener('click', scrollToTop);
+		function scrollToTop () {
+      window.scrollTo(0, 0);
+    }
+		window.onscroll = function() {
+			const styleBtn = `top: ${window.pageYOffset+5}px;`;
+			buttonOnTop.style.cssText = styleBtn;
+		}
+		//drag
+    window.onload = function () {
+    	let bool = false;
+        // клавиша мыши нажата
+        drag.onmousedown = function (e) {
+          const target = e.target;
+					if(target.matches('#drag')) {
+            drag.style.top = -drag.clientY+e.clientY*2+`px`;
+            drag.style.left = -drag.clientX+e.clientX*2+`px`;
+            bool = true;		
+          } else {return;};
+				}
+				window.onmousemove = function (e) {
+					if (bool) {
+						drag.style.top = -25+e.clientY+`px`;
+            drag.style.left = -25+e.clientX+`px`;
+					} else {return;};
+				}
+				window.onmouseup = function () {
+          drag.style.top = drag.clientY+`px`;
+          drag.style.left = drag.clientX+`px`;
+          bool = false;		
+        }
+
+		//создайте div, при клике на него, div начинает двигаться вправо, при клике на кнопку - останавливается, при попадании div к краю окна, он переходит к началу окна.
+
+    let boolElem = false;
+    let start = Date.now();
+    let timer;
+		function moveOn() {
+			let timePassed = Date.now() - start;
+			elem.style.left = timePassed/20 + 'px';
+			if ((elem.offsetLeft + 58) > document.documentElement.clientWidth) start = Date.now();
+		};
+
+		elem.onclick = function() {
+			if (!boolElem) {
+				boolElem = true;
+				timer = setInterval(moveOn, 20);
+			} else {
+				boolElem = false;
+				clearInterval(timer);
+			}
+		};
+	}
+	</script>
+</body>
+</html>
