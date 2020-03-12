@@ -1,0 +1,48 @@
+<!-- Переделайте примерм 013 через работу атрибутов.
+ Попробуйте варианты с рефакторингом -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Пример проверки достоверности ввода</title>
+    <style type="text/css">
+        input:invalid {
+            background-color: Pink;
+        }
+
+        input:valid {
+            background-color: LightGreen;
+        }
+    </style>
+</head>
+<body>
+    <form name="form1">
+            Name:
+        <input type="text" name="userName" pattern="^[a-z]{2,16}$" /><br />
+            email:
+        <input type="text" name="email" pattern="\b[a-z0-9._]+@[a-z0-9.-]+\.[a-z]{2,4}\b" /><br />
+            zipcode:
+        <input type="text" name="zip" pattern="^[0-9]{5}$" /><br />
+        <input type="submit" />
+    </form>
+
+    <script type="text/javascript">
+        if (window.addEventListener) window.addEventListener("load", init, false);
+        else if (window.attachEvent) window.attachEvent("onload", init);
+
+        function init() {
+         form1.onsubmit = onsubmitHandler;
+        }
+
+        function onsubmitHandler(event) {
+            for (var i = 0; i < form1.elements.length-1; ++i) {
+                if (!form1.elements[i].value) {
+                    alert("Допущены ошибки при заполнении формы.");
+                    event.preventDefault();
+                    return false;
+                }
+            }
+        }
+    </script>
+</body>
+</html>
